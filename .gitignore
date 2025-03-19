@@ -1,0 +1,4 @@
+/api/migrations/*
+*pyc
+/static/*
+logs/*
