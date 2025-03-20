@@ -16,7 +16,7 @@ def user_register(request):
     email = post_data.get("email")
     password = post_data.get("password")
     first_name = post_data.get("first_name")
-    last_name = post_data.geT("last_name")
+    last_name = post_data.get("last_name")
     if not username or not email or not password:
         return JsonResponse(dict(code=1, message="Input error"))
     if User.objects.filter(username=username).first():
