@@ -74,7 +74,7 @@ def add_comment(request):
         return JsonResponse(dict(code=1, message="Post ID not exist"))
     comment = Comment(
         post_id=post_id,
-        comment=post_data.get("comment"),
+        content=post_data.get("content"),
         username=request.user.username
     )
     comment.save()
