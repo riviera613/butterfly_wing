@@ -3,3 +3,6 @@ django-cors-headers
 uwsgi
 pymysql
 cryptography
+asgiref
+gunicorn
+psycopg2-binary
