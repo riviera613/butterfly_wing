@@ -1,14 +1,10 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
-
 import json
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from api.models import Post, Comment
 
-# Create your views here.
 
 def get_post_list(request):
     page = int(request.GET.get("page") or 1)
@@ -83,48 +79,3 @@ def add_comment(request):
     )
     comment.save()
     return JsonResponse(dict(code=0, message="Success"))
-
-
-@csrf_exempt
-def user_register(request):
-    post_data = json.loads(request.body)
-    username = post_data.get("username")
-    email = post_data.get("email")
-    password = post_data.get("password")
-    first_name = post_data.get("first_name")
-    last_name = post_data.geT("last_name")
-    if not username or not email or not password:
-        return JsonResponse(dict(code=1, message="Input error"))
-    if User.objects.filter(username=username).first():
-        return JsonResponse(dict(code=1, message="Username exist"))
-    User.objects.create_user(username=username, email=email, password=password,)
-    return JsonResponse(dict(code=0, message="Success"))
-
-
-@csrf_exempt
-def user_login(request):
-    post_data = json.loads(request.body)
-    username = post_data.get("username")
-    password = post_data.get("password")
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return JsonResponse(dict(code=0, message="Success"))
-    else:
-        return JsonResponse(dict(code=1, message="Login failed"))
-    
-
-@csrf_exempt
-def user_logout(request):
-    logout(request)
-    return JsonResponse(dict(code=0, message="Success"))
-
-
-@csrf_exempt
-def get_userinfo(request):
-    return JsonResponse(dict(code=0, message="Success", data=dict(
-        username=request.user.username,
-        first_name=request.user.first_name,
-        last_name=request.user.last_name,
-        email=request.user.email
-    )))
