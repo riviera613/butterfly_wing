@@ -10,5 +10,7 @@ urlpatterns = [
     path("comment/add", views.add_comment),
 
     path("user/register", views.user_register),
-    path("user/name", views.get_username),
+    path("user/login", views.user_login),
+    path("user/logout", views.user_logout),
+    path("user/info", views.get_userinfo),
 ]

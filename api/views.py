@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 
@@ -37,7 +38,7 @@ def get_post_detail(request):
 
 @csrf_exempt
 def add_post(request):
-    if not request.user:
+    if not request.user or not request.user.username:
         return JsonResponse(dict(code=1, message="User not login"))
     post_data = json.loads(request.body)
     post = Post(
@@ -68,7 +69,7 @@ def get_comment_list(request):
 
 @csrf_exempt
 def add_comment(request):
-    if not request.user:
+    if not request.user or not request.user.username:
         return JsonResponse(dict(code=1, message="User not login"))
     post_data = json.loads(request.body)
     post_id = int(post_data.get("post_id") or 0)
@@ -90,17 +91,40 @@ def user_register(request):
     username = post_data.get("username")
     email = post_data.get("email")
     password = post_data.get("password")
+    first_name = post_data.get("first_name")
+    last_name = post_data.geT("last_name")
     if not username or not email or not password:
         return JsonResponse(dict(code=1, message="Input error"))
     if User.objects.filter(username=username).first():
         return JsonResponse(dict(code=1, message="Username exist"))
-    User.objects.create_user(username=username, email=email, password=password, is_staff=True)
+    User.objects.create_user(username=username, email=email, password=password,)
     return JsonResponse(dict(code=0, message="Success"))
 
 
 @csrf_exempt
-def get_username(request):
-    username = ""
-    if request.user:
-        username = request.user.username
-    return JsonResponse(dict(code=0, message="Success", data=dict(username=username)))
+def user_login(request):
+    post_data = json.loads(request.body)
+    username = post_data.get("username")
+    password = post_data.get("password")
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return JsonResponse(dict(code=0, message="Success"))
+    else:
+        return JsonResponse(dict(code=1, message="Login failed"))
+    
+
+@csrf_exempt
+def user_logout(request):
+    logout(request)
+    return JsonResponse(dict(code=0, message="Success"))
+
+
+@csrf_exempt
+def get_userinfo(request):
+    return JsonResponse(dict(code=0, message="Success", data=dict(
+        username=request.user.username,
+        first_name=request.user.first_name,
+        last_name=request.user.last_name,
+        email=request.user.email
+    )))

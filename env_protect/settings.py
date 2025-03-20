@@ -84,8 +84,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'env_protect',  # 数据库名称
         'USER': 'root',  # 数据库用户名
-        'PASSWORD': 'linzhijie',  # 数据库密码
-        'HOST': 'localhost',  # 数据库主机地址
+        'PASSWORD': 'vUWBRvgvogB9iPe11aBB',  # 数据库密码
+        'HOST': '165.232.157.185',  # 数据库主机地址
         'PORT': '3306',  # 数据库端口号
         'OPTIONS': {
             'charset': 'utf8mb4',
