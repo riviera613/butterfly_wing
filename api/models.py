@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -16,7 +17,7 @@ class Post(models.Model):
             id=self.id,
             title=self.title,
             content=self.content,
-            create_time=self.create_time.strftime("%Y-%m-%d %H:%M:%S"),
+            create_time=timezone.localtime(self.create_time).strftime("%Y-%m-%d %H:%M:%S"),
             username=self.username,
             comment_count=self.get_comment_count(),
         )
@@ -28,10 +29,10 @@ class Comment(models.Model):
     username = models.CharField(max_length=64)
     create_time = models.DateTimeField(auto_now=True)
 
-    def to_dict(self):
+    def to_dict(self, id=0):
         return dict(
-            id=self.id,
+            id=id or self.id,
             content=self.content,
-            create_time=self.create_time.strftime("%Y-%m-%d %H:%M:%S"),
+            create_time=timezone.localtime(self.create_time).strftime("%Y-%m-%d %H:%M:%S"),
             username=self.username,
         )

@@ -52,13 +52,13 @@ def get_comment_list(request):
     size = int(request.GET.get("size") or 100)
 
     total = Comment.objects.filter(post_id=post_id).count()
-    comment_list = Comment.objects.filter(post_id=post_id).order_by("-id")[(page - 1) * size: page * size]
+    comment_list = Comment.objects.filter(post_id=post_id).order_by("id")[(page - 1) * size: page * size]
     return JsonResponse(dict(
         code=0,
         message="Success",
         data=dict(
             total=total,
-            comment_list=list(map(lambda x: x.to_dict(), comment_list))
+            comment_list=list(map(lambda x: x[0].to_dict(x[1] + 1), zip(comment_list, range(len(comment_list)))))
         )
     ))
 

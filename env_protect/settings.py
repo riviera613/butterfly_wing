@@ -191,3 +191,7 @@ LOGGING = {
 WECHAT_APPID = 'your_appid'
 WECHAT_SECRET = 'your_appsecret'
 WECHAT_REDIRECT_URI = 'https://butterfly-wing-qdti7.ondigitalocean.app/api/wechat/callback'
+
+USE_TZ = True
+
+TIME_ZONE = 'Asia/Shanghai'
