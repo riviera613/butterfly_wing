@@ -1,5 +1,6 @@
 import json
 import requests
+import logging
 
 from django.http import JsonResponse
 from django.conf import settings
@@ -82,6 +83,7 @@ def wechat_callback(request):
     }
     response = requests.get(base_url, params=params)
     data = response.json()
+    logging.info(f"Wechat login, resp = {data}")
     access_token = data.get("access_token")
     openid = data.get("openid")
 
@@ -101,6 +103,6 @@ def wechat_callback(request):
     password = username
     user = User.objects.filter(username=username).first()
     if not user:
-        user = User.objects.create_user(username=username, email=f"{username}@test.com", password=password)
+        user = User.objects.create_user(username=username, email=f"{username}@testemail.com", password=password)
     login(request, user)
     return redirect("/")

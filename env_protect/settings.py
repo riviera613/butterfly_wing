@@ -188,8 +188,8 @@ LOGGING = {
     },
 }
 
-WECHAT_APPID = 'your_appid'
-WECHAT_SECRET = 'your_appsecret'
+WECHAT_APPID = 'wx0438db783b171822'
+WECHAT_SECRET = '3c6b49eda706d8ecb333bf4fad818b0c'
 WECHAT_REDIRECT_URI = 'https://butterfly-wing-qdti7.ondigitalocean.app/api/wechat/callback'
 
 USE_TZ = True
