@@ -1,6 +1,7 @@
 import json
 import requests
 import logging
+import hashlib
 
 from django.http import JsonResponse
 from django.conf import settings
@@ -103,7 +104,7 @@ def wechat_callback(request):
     # response = requests.get(base_url, params=params)
     # user_info = response.json()
 
-    username = f"wechat_user_{openid}"
+    username = f"wechat_user_{hashlib.md5(openid.encode()).hexdigest()}"
     password = username
     user = User.objects.filter(username=username).first()
     if not user:
