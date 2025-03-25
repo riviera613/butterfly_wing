@@ -47,6 +47,10 @@ def user_logout(request):
 
 @csrf_exempt
 def get_userinfo(request):
+    if not request.user or request.user.username == "":
+        return JsonResponse(dict(code=0, message="Success", data=dict(
+            username="",
+        )))
     return JsonResponse(dict(code=0, message="Success", data=dict(
         username=request.user.username,
         first_name=request.user.first_name,
