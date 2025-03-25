@@ -32,9 +32,13 @@ def user_login(request):
     post_data = json.loads(request.body)
     username = post_data.get("username")
     password = post_data.get("password")
+    expire = post_data.get("expire") or 0
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
+        if expire:
+            # 前端设置不保持登录态，设置过期时间为0可以让登录状态在浏览器关闭后失效
+            request.session.set_expiry(0)
         return JsonResponse(dict(code=0, message="Success"))
     else:
         return JsonResponse(dict(code=1, message="Login failed"))
