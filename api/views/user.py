@@ -103,7 +103,7 @@ def wechat_callback(request):
     # response = requests.get(base_url, params=params)
     # user_info = response.json()
 
-    username = "wechat_user_{openid}"
+    username = f"wechat_user_{openid}"
     password = username
     user = User.objects.filter(username=username).first()
     if not user:
